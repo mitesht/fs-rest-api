@@ -1,5 +1,4 @@
 
-==============
 Prerequisites:
 ==============
 
@@ -13,7 +12,6 @@ For different OS, steps are available on the same portal.
 Commands in this document are for Ubuntu, as my docker host machine is Ubunutu. Please apply similar commands for your OS.
 
 
-=============================
 Part 1 - FreeswitchDockerfile
 =============================
 
@@ -37,7 +35,6 @@ You will have two users as mentioned in the document.
 As we have used --network=host, you can access the FreeSWITCH service with IP/hostname of the docker host machine.
 
 
-====================================
 Part 2 - FreeswitchRESTAPIDockerfile
 ====================================
 
@@ -52,7 +49,6 @@ sudo docker run --name fs_rest_api_1.0 --network host -v vol_fs:/var/log/freeswi
 You're done. You will have the RESTful api running on port 80. As we have used --network=host, you can access the service with IP/host of the docker host machine.
 
 
-====================
 Example of API calls
 ====================
 

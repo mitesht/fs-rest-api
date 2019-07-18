@@ -1,23 +1,8 @@
-FROM debian:stretch
+FROM fs:1.0
 
 # Dockerfile version: 1.0
 
-RUN apt-get update && apt-get install -y gnupg2 wget python-setuptools swig gcc g++ python-dev
-
-# FreeSwitch Installation
-RUN wget -O - https://files.freeswitch.org/repo/deb/freeswitch-1.8/fsstretch-archive-keyring.asc | apt-key add -
-RUN echo "deb http://files.freeswitch.org/repo/deb/freeswitch-1.8/ stretch main" > /etc/apt/sources.list.d/freeswitch.list
-RUN echo "deb-src http://files.freeswitch.org/repo/deb/freeswitch-1.8/ stretch main" >> /etc/apt/sources.list.d/freeswitch.list
-RUN apt-get update && apt-get install -y freeswitch-meta-all
-
-# Copying / removing FreeSwitch configuration files
-COPY freeswitch_config/event_socket.conf.xml /etc/freeswitch/autoload_configs/event_socket.conf.xml
-RUN rm -rf /etc/freeswitch/directory/default/*.xml /etc/freeswitch/sip_profiles/external* /etc/freeswitch/sip_profiles/internal-ipv6.xml
-COPY freeswitch_config/testplivo1.xml freeswitch_config/testplivo2.xml /etc/freeswitch/directory/default/
-COPY freeswitch_config/directory_default.xml /etc/freeswitch/directory/default.xml
-COPY freeswitch_config/vars.xml /etc/freeswitch/vars.xml
-COPY freeswitch_config/modules.conf.xml /etc/freeswitch/autoload_configs/modules.conf.xml
-COPY freeswitch_config/dialplan_default.xml /etc/freeswitch/dialplan/default.xml
+RUN apt-get update && apt-get install -y python-setuptools swig gcc g++ python-dev
 
 # Python related Installation
 RUN /usr/bin/easy_install pip
@@ -33,10 +18,6 @@ COPY startup_script.sh /opt/
 RUN chmod 755 /opt/startup_script.sh
 
 # Ports to publish
-EXPOSE 5060/udp 5080/udp 16384-16494/udp
-EXPOSE 5060/tcp 5080/tcp 80/tcp
-
-# Volume for FreeSWITCH logs
-VOLUME ["/var/log/freeswitch"]
+EXPOSE 80/tcp
 
 CMD ["/bin/bash","/opt/startup_script.sh"]
